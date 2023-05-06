@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import {UpstashRedisAdapter} from '@next-auth/upstash-redis-adapter'
 import { db } from "./db";
 import  GoogleProvider from 'next-auth/providers/google'
+import { redirect } from "next/dist/server/api-utils";
 export const authOptions: NextAuthOptions = {
     adapter: UpstashRedisAdapter(db),
     session: {
@@ -44,8 +45,11 @@ export const authOptions: NextAuthOptions = {
                 session.user.image = token.picture
             }
             return session;
+        },
+        redirect() {
+            return '/dashboard'
         }
-    }
+    },
 }
 
 function getGoogleCredentials () {
