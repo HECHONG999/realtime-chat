@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compiler: {
+    removeConsole: false,
+  },
     experimental: {
       appDir: true,
     },
