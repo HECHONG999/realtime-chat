@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       ),
       db.sadd(`user:${session.user.id}:friends`, idToAdd),
       db.sadd(`user:${idToAdd}:friends`, session.user.id),
-      db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAdd),
+      db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAdd), // 删除 user 请求添加好友集合中 中id为 idToAdd
     ])
 
     return new Response('OK')
