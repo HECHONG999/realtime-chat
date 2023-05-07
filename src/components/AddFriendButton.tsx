@@ -17,6 +17,7 @@ const AddFriendButton: FC<AddFriendButtonProps> = ({}) => {
     const addFriend = async (email:string) => {
         try{
             const validatedEmail = addFriendValidator.parse({email}) // get email value after zod parse
+            // /api/friends/add nextjs 强制约定 在app 下 创建的 api 路由
             await axios.post('/api/friends/add', {
                 email: validatedEmail,
               })

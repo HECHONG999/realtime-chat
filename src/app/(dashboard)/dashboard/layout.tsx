@@ -2,6 +2,10 @@ import { FC, ReactNode } from 'react'
 import Link from 'next/link'
 import {Icons} from '@/components/Icons'
 import { SidebarOption } from '@/types/typings'
+import Image from 'next/image'
+import { getServerSession } from 'next-auth'
+import { notFound } from 'next/navigation'
+import { authOptions } from '@/lib/auth'
 
 interface layoutProps {
     children: ReactNode
@@ -14,7 +18,9 @@ const sidebarOptions: SidebarOption[] = [
       Icon: 'UserPlus',
     },
   ]
-const layout: FC<layoutProps> = ({children}) => {
+const Layout =  async ({ children }: layoutProps) => {
+  const session = await getServerSession(authOptions)
+  if (!session) notFound()
   return (
     <div className='flex w-full h-screen bg-white'>
         <div className='flex-col hidden w-full h-full max-w-xs px-6 overflow-y-auto bg-white border-r border-gray-200 md:flex grow gap-y-5'>
@@ -50,6 +56,29 @@ const layout: FC<layoutProps> = ({children}) => {
                         })}
                         </ul>
                     </li>
+                    <li className='flex items-center mt-auto -mx-6'>
+              <div className='flex items-center flex-1 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 gap-x-4'>
+                <div className='relative w-8 h-8 bg-gray-50'>
+                  <Image
+                    fill
+                    referrerPolicy='no-referrer'
+                    className='rounded-full'
+                    src={session.user.image || ''}
+                    alt='Your profile picture'
+                  />
+                </div>
+
+                <span className='sr-only'>Your profile</span>
+                <div className='flex flex-col'>
+                  <span aria-hidden='true'>{session.user.name}</span>
+                  <span className='text-xs text-zinc-400' aria-hidden='true'>
+                    {session.user.email}
+                  </span>
+                </div>
+              </div>
+
+              {/* <SignOutButton className='h-full aspect-square' /> */}
+            </li>
                 </ul>
             </nav>
         </div>
@@ -60,4 +89,4 @@ const layout: FC<layoutProps> = ({children}) => {
   )
 }
 
-export default layout
+export default Layout
