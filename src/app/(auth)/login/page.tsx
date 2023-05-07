@@ -1,20 +1,20 @@
 'use client'
+
 import Button from '@/components/Button'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { toast} from 'react-hot-toast'
 export default async function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const loginWithGoogle = async () => {
+   async function loginWithGoogle() {
     setIsLoading(true);
-    await signIn('google')
-
     try{
-      // await signIn('google')
+       signIn('google')
       // throw new Error()
     }catch(error) {
       toast.error('Something went wrong with your login')
     }finally {
+      debugger
       setIsLoading(false)
     }
   }
