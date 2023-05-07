@@ -1,5 +1,5 @@
 import { db } from '@/lib/db'
-import Button from '@/components/Button'
+import Button from '@/components/ui/Button'
 
 export default async function Home() {
   await db.set('hello','helloeeee')

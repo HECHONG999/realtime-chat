@@ -6,6 +6,9 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import SignOutButton from '@/components/SignOutButton'
+import FriendRequestSidebarOptions from '@/components/FriendRequestSidebarOptions'
+import { fetchRedis } from '@/helpers/redis'
 interface layoutProps {
     children: ReactNode
 }
@@ -19,8 +22,10 @@ const sidebarOptions: SidebarOption[] = [
   ]
 const layout = async({children}:layoutProps) => {
     const session = await getServerSession(authOptions)
-    console.log('session======', session)
+    // console.log('session======', session)
     if(!session) notFound()
+    // const session = {}
+    const unseenRequestCount = (await fetchRedis('smembers', `user:${session?.user?.id}:incoming_friend_requests`) as User[]).length 
   return (
     <div className='flex w-full h-screen bg-white'>
         <div className='flex-col hidden w-full h-full max-w-xs px-6 overflow-y-auto bg-white border-r border-gray-200 md:flex grow gap-y-5'>
@@ -54,6 +59,10 @@ const layout = async({children}:layoutProps) => {
                                 </li>
                             )
                         })}
+
+                        <li>
+                            <FriendRequestSidebarOptions sessionId={session?.user?.id} initialUnseenRequestCount={unseenRequestCount}/>
+                        </li>
                         </ul>
                     </li>
 
@@ -64,21 +73,21 @@ const layout = async({children}:layoutProps) => {
                     fill
                     referrerPolicy='no-referrer'
                     className='rounded-full'
-                    src={session.user.image || ''}
+                    src={session?.user?.image || ''}
                     alt='Your profile picture'
                   />
                 </div>
 
                 <span className='sr-only'>Your profile</span>
                 <div className='flex flex-col'>
-                  <span aria-hidden='true'>{session.user.name}</span>
+                  <span aria-hidden='true'>{session?.user?.name}</span>
                   <span className='text-xs text-zinc-400' aria-hidden='true'>
-                    {session.user.email}
+                    {session?.user?.email}
                   </span>
                 </div>
               </div>
 
-              {/* <SignOutButton className='h-full aspect-square' /> */}
+              <SignOutButton className='h-full aspect-square' />
             </li>
                 </ul>
             </nav>

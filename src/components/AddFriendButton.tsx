@@ -1,6 +1,6 @@
 'use client'
 import { FC, useState } from 'react'
-import Button from './Button'
+import Button from './ui/Button'
 import { useForm, Resolver } from "react-hook-form";
 import z from 'zod'
 import { addFriendValidator } from '@/lib/validations/add-friend';
