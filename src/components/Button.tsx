@@ -22,14 +22,28 @@ const buttonVariants = cva('active:scale-95 inline-flex items-center justify-cen
    }
 })
 
-export interface buttonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
-    isLoading?: boolean
+export interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  isLoading?: boolean
 }
-const  button:FC< buttonProps> = ({className, children, variant, isLoading , size, ...props}) => {
-    return <button className={cn(buttonVariants({variant, size, className}))} {...props} disabled={isLoading} >
-        {isLoading ? <Loader2 className='w-4 h-4 mr-2 animate-spin'/> : null}
+const Button: FC<ButtonProps> = ({
+    className,
+    children,
+    variant,
+    isLoading,
+    size,
+    ...props
+  }) => {
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size, className }))}
+        disabled={isLoading}
+        {...props}>
+        {isLoading ? <Loader2 className='w-4 h-4 mr-2 animate-spin' /> : null}
         {children}
-    </button>
-}
+      </button>
+    )
+  }
 
-export default  button
+export default  Button

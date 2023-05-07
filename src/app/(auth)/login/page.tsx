@@ -6,8 +6,9 @@ import { toast} from 'react-hot-toast'
 export default async function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const loginWithGoogle = async () => {
-    await signIn('google')
     setIsLoading(true);
+    await signIn('google')
+
     try{
       // await signIn('google')
       // throw new Error()
