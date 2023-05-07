@@ -2,11 +2,10 @@ import { FC, ReactNode } from 'react'
 import Link from 'next/link'
 import {Icons} from '@/components/Icons'
 import { SidebarOption } from '@/types/typings'
-import Image from 'next/image'
 import { getServerSession } from 'next-auth'
-import { notFound } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
-
+import Image from 'next/image'
+import { notFound } from 'next/navigation'
 interface layoutProps {
     children: ReactNode
 }
@@ -18,9 +17,10 @@ const sidebarOptions: SidebarOption[] = [
       Icon: 'UserPlus',
     },
   ]
-const Layout =  async ({ children }: layoutProps) => {
-  const session = await getServerSession(authOptions)
-  if (!session) notFound()
+const layout = async({children}:layoutProps) => {
+    const session = await getServerSession(authOptions)
+    console.log('session======', session)
+    if(!session) notFound()
   return (
     <div className='flex w-full h-screen bg-white'>
         <div className='flex-col hidden w-full h-full max-w-xs px-6 overflow-y-auto bg-white border-r border-gray-200 md:flex grow gap-y-5'>
@@ -56,6 +56,7 @@ const Layout =  async ({ children }: layoutProps) => {
                         })}
                         </ul>
                     </li>
+
                     <li className='flex items-center mt-auto -mx-6'>
               <div className='flex items-center flex-1 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 gap-x-4'>
                 <div className='relative w-8 h-8 bg-gray-50'>
@@ -89,4 +90,4 @@ const Layout =  async ({ children }: layoutProps) => {
   )
 }
 
-export default Layout
+export default layout
