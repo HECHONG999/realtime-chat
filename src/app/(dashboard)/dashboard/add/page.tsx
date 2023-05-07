@@ -1,9 +1,12 @@
-import React from 'react'
+import { FC } from 'react'
+import AddFriendButton from '@/components/AddFriendButton'
 
-export default function page() {
-  return (
-    <main className='pt-8'>
-        <h2>add a friend</h2>
-    </main>
-  )
+
+const page: FC = ({}) => {
+  return <div className='mt-8'>
+    <h1 className='mb-8 text-5xl font-bold '>Add a friend</h1>
+    <AddFriendButton/>
+  </div>
 }
+
+export default page
