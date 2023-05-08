@@ -2,6 +2,8 @@ import { NextAuthOptions } from "next-auth";
 import {UpstashRedisAdapter} from '@next-auth/upstash-redis-adapter'
 import { db } from "./db";
 import  GoogleProvider from 'next-auth/providers/google'
+import GithubProvider from 'next-auth/providers/github'
+
 import { fetchRedis } from '@/helpers/redis'
 
 export const authOptions: NextAuthOptions = {
@@ -13,13 +15,17 @@ export const authOptions: NextAuthOptions = {
         signIn: '/login'
     },
     providers: [
-        GoogleProvider({
-            clientId: '760503475231-m3njpenar6dpg1apjqh7lo4qfbgecdoo.apps.googleusercontent.com',
-            clientSecret: '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',
-            httpOptions: {
-                timeout: 40000,
-              }
-        })
+        // GoogleProvider({
+        //     clientId: '760503475231-m3njpenar6dpg1apjqh7lo4qfbgecdoo.apps.googleusercontent.com',
+        //     clientSecret: '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',
+        //     httpOptions: {
+        //         timeout: 40000,
+        //       }
+        // }),
+        GithubProvider({
+            clientId: '096ac699f576e6414c61',
+            clientSecret: '7e90eb3ea66baab754737ee43c47e751716d29ba'
+          })
     ],
     callbacks: {
         async jwt ({token, user}) {
@@ -44,7 +50,6 @@ export const authOptions: NextAuthOptions = {
             }
         },
         async session({session, token}) {
-            console.log('session==', session)
             if(token) {
                 session.user.id  = token.id;
                 session.user.email = token.email;

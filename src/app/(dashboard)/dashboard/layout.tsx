@@ -105,7 +105,7 @@ const layout = async({children}:layoutProps) => {
                   </ul>
               </nav>
           </div>
-          <aside className='container w-full max-h-screen py-16 md:py-12'>
+          <aside className='container w-full max-h-screen px-10 py-16 md:py-12'>
           {children}
         </aside>
       </div>

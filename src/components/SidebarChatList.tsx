@@ -9,7 +9,7 @@ interface SidebarChatListProps {
 
 const SidebarChatList: FC<SidebarChatListProps> = ({friends, sessionId}) => {
   const [unseenMessages, setUnseenMessages] = useState<Message[]>([])
-  const [activeChats, setactiveChats] = useState<User[]>([])
+  const [activeChats, setactiveChats] = useState<User[]>(friends)
   return (
     <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1'>
     {

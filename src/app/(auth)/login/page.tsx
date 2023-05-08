@@ -9,7 +9,8 @@ export default async function Home() {
    async function loginWithGoogle() {
     setIsLoading(true);
     try{
-       signIn('google')
+      //  signIn('google')
+      signIn('github')
       // throw new Error()
     }catch(error) {
       toast.error('Something went wrong with your login')
