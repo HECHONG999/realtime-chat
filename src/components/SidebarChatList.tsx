@@ -1,6 +1,8 @@
 'use client'
-import { chatHrefConstructor } from '@/lib/utils'
-import { FC, useState } from 'react'
+import { chatHrefConstructor, toPusherKey } from '@/lib/utils'
+import { FC, useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { pusherClient } from '@/lib/pusher'
 
 interface SidebarChatListProps {
   friends: User []
@@ -8,8 +10,31 @@ interface SidebarChatListProps {
 }
 
 const SidebarChatList: FC<SidebarChatListProps> = ({friends, sessionId}) => {
+  const router = useRouter()
+  const pathname = usePathname()
   const [unseenMessages, setUnseenMessages] = useState<Message[]>([])
   const [activeChats, setactiveChats] = useState<User[]>(friends)
+
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`))
+    pusherClient.bind('new_message', newMessageChatHandler)
+
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`))
+    pusherClient.bind('new_friend', newFriendHandler)
+  })
+  const newFriendHandler = (newFriend: User) => {
+    console.log("received new user", newFriend)
+    setactiveChats((prev) => [...prev, newFriend])
+  }
+
+  const newMessageChatHandler = (message: Message) => {
+    //whether show notify
+    const shouldNotify = pathname !== `/dashboard/chat/${chatHrefConstructor(sessionId, message.senderId)}`
+    if (!shouldNotify) return
+
+    // 显示通知处理
+    
+  }
   return (
     <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1'>
     {
