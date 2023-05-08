@@ -14,8 +14,6 @@ export default withAuth(
     const isAccessingSensitiveRoute = sensitiveRoutes.some((route) =>
       pathname.startsWith(route)
     )
-    console.log('isAuth', isAuth, pathname)
-    console.log('isAcee', isAccessingSensitiveRoute)
     if (isLoginPage) {
       if (isAuth) {
         return NextResponse.redirect(new URL('/dashboard', req.url))
