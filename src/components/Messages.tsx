@@ -1,3 +1,4 @@
+'use client'
 import { FC, useRef, useState } from 'react'
 import { cn, toPusherKey } from '@/lib/utils'
 import Image from 'next/image'
