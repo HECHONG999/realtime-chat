@@ -8,7 +8,7 @@ interface pageProps {
 const page= async ({}) => {
     const session = await getServerSession(authOptions)
     return <div className='min-h-screen'>
-        {JSON.stringify(session)}
+       Welcome
     </div>
 }
 

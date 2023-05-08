@@ -3,10 +3,17 @@ import { chatHrefConstructor, toPusherKey } from '@/lib/utils'
 import { FC, useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { pusherClient } from '@/lib/pusher'
+import toast from 'react-hot-toast'
+import UnseenChatToast from './UnseenChatToast'
 
 interface SidebarChatListProps {
   friends: User []
   sessionId: string
+}
+
+interface ExtendedMessage extends Message {
+  senderImg: string
+  senderName: string
 }
 
 const SidebarChatList: FC<SidebarChatListProps> = ({friends, sessionId}) => {
@@ -27,13 +34,25 @@ const SidebarChatList: FC<SidebarChatListProps> = ({friends, sessionId}) => {
     setactiveChats((prev) => [...prev, newFriend])
   }
 
-  const newMessageChatHandler = (message: Message) => {
+  const newMessageChatHandler = (message: ExtendedMessage) => {
     //whether show notify
     const shouldNotify = pathname !== `/dashboard/chat/${chatHrefConstructor(sessionId, message.senderId)}`
     if (!shouldNotify) return
 
     // 显示通知处理
-    
+      // should be notified
+      toast.custom((t) => (
+        <UnseenChatToast
+          t={t}
+          sessionId={sessionId}
+          senderId={message.senderId}
+          senderImg={message.senderImg}
+          senderMessage={message.text}
+          senderName={message.senderName}
+        />
+      ))
+
+      setUnseenMessages((prev) => [...prev, message])
   }
   return (
     <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1'>
