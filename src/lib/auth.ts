@@ -5,9 +5,9 @@ import GoogleProvider from 'next-auth/providers/google'
 import GithubProvider from 'next-auth/providers/github'
 import Credentials from 'next-auth/providers/credentials'
 import { fetchRedis } from '@/helpers/redis'
-import axios from "axios";
-import {v4 as uuidv4} from "uuid";
-import {el} from "date-fns/locale";
+// import axios from "axios";
+// import {v4 as uuidv4} from "uuid";
+
 
 // @ts-ignore
 export const authOptions: NextAuthOptions = {
@@ -47,17 +47,17 @@ export const authOptions: NextAuthOptions = {
         //    email: credentials?.email,
         //    id: uuid,
         //  }
-        return  Promise.resolve(null)
-         const result =await db.get(`user:email:${credentials?.email}`)
-       if(result) {
-         const user = await db.get(`user:${result}`)
-         return Promise.resolve(user)
-       }else {
-         await db.set(`user:email:${credentials?.email}`,uuid)
-          await db.set(`user:${uuid}`, JSON.stringify(userData))
-          await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
-         return Promise.resolve(userData)
-       }
+       //  return  Promise.resolve(null)
+       //   const result =await db.get(`user:email:${credentials?.email}`)
+       // if(result) {
+       //   const user = await db.get(`user:${result}`)
+       //   return Promise.resolve(user)
+       // }else {
+       //   await db.set(`user:email:${credentials?.email}`,uuid)
+       //    await db.set(`user:${uuid}`, JSON.stringify(userData))
+       //    await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
+       //   return Promise.resolve(userData)
+       // }
       }
     })
   ],
