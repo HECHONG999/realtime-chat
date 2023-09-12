@@ -39,6 +39,7 @@ export const authOptions: NextAuthOptions = {
       authorize: async (credentials) => {
         // 在这个函数中，你需要自行编写匹配用户名和密码的代码
         // 如果成功，应返回一个User对象；否则返回null
+
         const uuid = uuidv4()
          const userData = {
            name:credentials?.username,
@@ -48,10 +49,10 @@ export const authOptions: NextAuthOptions = {
            id: uuid,
            customId: uuid
          }
+        return  Promise.resolve(userData)
          const result =await db.get(`user:email:${credentials?.email}`)
        if(result) {
          const user = await db.get(`user:${result}`)
-         console.log('user===', user)
          return Promise.resolve(user)
        }else {
          await db.set(`user:email:${credentials?.email}`,uuid)
