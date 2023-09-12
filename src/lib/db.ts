@@ -1,6 +1,6 @@
 import { Redis } from '@upstash/redis'
 
 export const db = new Redis({
-  url: 'https://apn1-proper-marmot-33806.upstash.io',
-  token: 'AYQOASQgZjEwMmM0YzktZGUyNy00OGQwLWI4OWUtMmY2MDM3MjcyZjQ4NjFjMWY1NGIzM2I2NDQxZWI2MjEyMzAxODMxYTAzZWM=',
+  url: 'https://credible-boar-33126.upstash.io',
+  token: 'AYFmASQgZjRjN2RlZDktMzE2NC00YmU4LThhMjAtMzdkOTc5ODY4NmYxZWQ4YzZhN2FmMzBjNDUzYmEzNTQ5YzMzODMzNjM4YTY=',
 })
