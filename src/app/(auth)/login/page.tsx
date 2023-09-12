@@ -36,19 +36,19 @@ const  Login  = () =>  {
             return
         }
         const csrfToken = await getCsrfToken()
-        const response = await fetch('/api/auth/callback/credentials', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                csrfToken,
-                email,
-                username,
-                password
-            })
-        });
-
+        // const response = await fetch('/api/auth/callback/credentials', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         csrfToken,
+        //         email,
+        //         username,
+        //         password
+        //     })
+        // });
+        await signIn("username-login", { username, password ,email,csrfToken, });
         // handle response
     };
 

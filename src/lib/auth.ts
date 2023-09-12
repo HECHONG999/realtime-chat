@@ -28,6 +28,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: '633ddd1d0dbca07c11dd513be8668ea3d0554da7'
     }),
     Credentials({
+      id: "username-login", // <- add this line
       name: 'Credentials',
       credentials: {
         username: {label: "Username", type: "text" },
