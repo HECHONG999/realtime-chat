@@ -35,8 +35,8 @@ export const authOptions: NextAuthOptions = {
       clientSecret: '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',
     }),
     GithubProvider({
-      clientId: '6d6b153a6f77e819ba70',
-      clientSecret: 'bf69ae9d37a8868624475f272ea6b0bba5843ac2'
+      clientId: '096ac699f576e6414c61',
+      clientSecret: '633ddd1d0dbca07c11dd513be8668ea3d0554da7'
     })
   ],
   callbacks: {

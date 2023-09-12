@@ -26,6 +26,9 @@ const ChatInput: FC<ChatInputProps> = ({chatId, chatPartner}) => {
             setIsLoading(false)
         }
     }
+    const  switchRobot = () => {
+        console.log('qiehuan')
+    }
     return (
         <div className='px-4 pt-4 mb-2 border-t border-gray-200 sm:mb-0'>
             <div className='relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600'>
@@ -43,7 +46,7 @@ const ChatInput: FC<ChatInputProps> = ({chatId, chatPartner}) => {
                     placeholder={`Message ${chatPartner.name}`}
                     className='block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6'
                     />
-                    
+
                     <div
                     onClick={() => textareaRef.current?.focus()}
                     className='py-2'
@@ -54,16 +57,20 @@ const ChatInput: FC<ChatInputProps> = ({chatId, chatPartner}) => {
                     </div>
 
                     <div className='absolute bottom-0 right-0 flex justify-between py-2 pl-3 pr-2'>
-                        <div className='flex-shrin-0'>
-                            <Button isLoading={isLoading} onClick={sendMessage} type='submit'>
-                            Post
+                        <div className='flex-shrin-0 flex-col '>
+                            <Button className='mr-2' isLoading={isLoading} onClick={sendMessage} type='submit'>
+                                Send
                             </Button>
+                            <Button className='mr-2' isLoading={isLoading} onClick={switchRobot} type='submit'>
+                                切換機器人/真人
+                            </Button>
+
                         </div>
                     </div>
                 </div>
             </div>
     )
-   
+
 }
 
 export default ChatInput

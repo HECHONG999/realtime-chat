@@ -7,6 +7,7 @@ import Image from 'next/image';
 import ChatInput from "@/components/ChatInput"
 import Messages from '@/components/Messages'
 import { messageArrayValidator } from '@/lib/validations/message';
+import Button from "@/components/ui/Button";
 interface pageProps {
   params: {
     chatId: string
@@ -21,7 +22,7 @@ async function getChatMessages(chatId:string) {
       0,
       -1
     )
-    const dbMessages = results.map((message) => JSON.parse(message) as Message) 
+    const dbMessages = results.map((message) => JSON.parse(message) as Message)
     const reversedDbMessages = dbMessages.reverse()
 
     const messages = messageArrayValidator.parse(reversedDbMessages)
@@ -38,7 +39,7 @@ const page  = async({params}: pageProps) => {
     if(!session) notFound()
     const {user} = session
     const [userId1, userId2] = chatId.split('--')
-   
+
     if(user.id !== userId1 && user.id !== userId2) {
         notFound()
     }
@@ -77,6 +78,11 @@ const page  = async({params}: pageProps) => {
             <span className='text-sm text-gray-600'>{chatPartner.email}</span>
           </div>
         </div>
+          <div>
+              <Button>
+                  查看好友詳情
+              </Button>
+          </div>
       </div>
 
       <Messages
@@ -86,8 +92,8 @@ const page  = async({params}: pageProps) => {
         sessionId={session.user.id}
         initialMessages={initialMessages}
       />
-     
-      <ChatInput chatId={chatId} chatPartner={chatPartner} /> 
+
+      <ChatInput chatId={chatId} chatPartner={chatPartner} />
     </div>
     )
 }
