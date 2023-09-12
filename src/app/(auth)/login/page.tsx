@@ -9,7 +9,7 @@ export default async function Home() {
    async function loginWithGoogle() {
     setIsLoading(true);
     try{
-       signIn('google')
+        signIn('google')
     }catch(error) {
       toast.error('Something went wrong with your login')
     }finally {
@@ -19,7 +19,7 @@ export default async function Home() {
   async function loginWithGithub() {
     setIsLoading(true);
     try{
-      signIn('github')
+       signIn('github')
     }catch(error) {
       toast.error('Something went wrong with your login')
     }finally {
