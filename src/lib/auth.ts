@@ -40,14 +40,14 @@ export const authOptions: NextAuthOptions = {
         // 在这个函数中，你需要自行编写匹配用户名和密码的代码
         // 如果成功，应返回一个User对象；否则返回null
 
-        const uuid = uuidv4()
-         const userData = {
-           name:credentials?.username,
-           image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
-           email: credentials?.email,
-           id: uuid,
-         }
-        return  Promise.resolve(userData)
+        // const uuid = uuidv4()
+        //  const userData = {
+        //    name:credentials?.username,
+        //    image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
+        //    email: credentials?.email,
+        //    id: uuid,
+        //  }
+        return  Promise.resolve(null)
          const result =await db.get(`user:email:${credentials?.email}`)
        if(result) {
          const user = await db.get(`user:${result}`)
@@ -85,7 +85,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id ? token.id : token.id
+        session.user.id = token.id
         session.user.name = token.name
         session.user.email = token.email
         session.user.image = token.picture
