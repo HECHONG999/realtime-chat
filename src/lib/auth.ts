@@ -5,8 +5,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import GithubProvider from 'next-auth/providers/github'
 import Credentials from 'next-auth/providers/credentials'
 import { fetchRedis } from '@/helpers/redis'
-// import axios from "axios";
-// import {v4 as uuidv4} from "uuid";
+import {v4 as uuidv4} from "uuid";
 
 
 // @ts-ignore
@@ -40,24 +39,23 @@ export const authOptions: NextAuthOptions = {
         // 在这个函数中，你需要自行编写匹配用户名和密码的代码
         // 如果成功，应返回一个User对象；否则返回null
 
-        // const uuid = uuidv4()
-        //  const userData = {
-        //    name:credentials?.username,
-        //    image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
-        //    email: credentials?.email,
-        //    id: uuid,
-        //  }
-       //  return  Promise.resolve(null)
-       //   const result =await db.get(`user:email:${credentials?.email}`)
-       // if(result) {
-       //   const user = await db.get(`user:${result}`)
-       //   return Promise.resolve(user)
-       // }else {
-       //   await db.set(`user:email:${credentials?.email}`,uuid)
-       //    await db.set(`user:${uuid}`, JSON.stringify(userData))
-       //    await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
-       //   return Promise.resolve(userData)
-       // }
+        const uuid = uuidv4()
+         const userData = {
+           name:credentials?.username,
+           image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
+           email: credentials?.email,
+           id: uuid,
+         }
+         const result =await db.get(`user:email:${credentials?.email}`)
+       if(result) {
+         const user = await db.get(`user:${result}`)
+         return user
+       }else {
+         await db.set(`user:email:${credentials?.email}`,uuid)
+          await db.set(`user:${uuid}`, JSON.stringify(userData))
+          await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
+         return userData
+       }
       }
     })
   ],
