@@ -29,7 +29,7 @@ const  Login  = () =>  {
       setIsLoading(false)
     }
   }
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event:any) => {
         event.preventDefault();
         if(username === '' || email === '') {
             toast.error('请完善表单信息')

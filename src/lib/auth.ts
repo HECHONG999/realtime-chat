@@ -9,6 +9,7 @@ import axios from "axios";
 import {v4 as uuidv4} from "uuid";
 import {el} from "date-fns/locale";
 
+// @ts-ignore
 export const authOptions: NextAuthOptions = {
   adapter: UpstashRedisAdapter(db),
   session: {
@@ -34,26 +35,26 @@ export const authOptions: NextAuthOptions = {
         password: {  label: "Password", type: "password" },
         email: {label: 'Email', type:'email'}
       },
+      //@ts-ignore
       authorize: async (credentials) => {
         // 在这个函数中，你需要自行编写匹配用户名和密码的代码
         // 如果成功，应返回一个User对象；否则返回null
         const uuid = uuidv4()
          const userData = {
-           name:credentials.name,
+           name:credentials?.username,
            image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
-           email: credentials.email,
+           email: credentials?.email,
            emailVerified:null,
-           name: credentials.username,
            id: uuid,
            customId: uuid
          }
-         const result =await db.get(`user:email:${credentials.email}`)
+         const result =await db.get(`user:email:${credentials?.email}`)
        if(result) {
          const user = await db.get(`user:${result}`)
          console.log('user===', user)
          return Promise.resolve(user)
        }else {
-         await db.set(`user:email:${credentials.email}`,uuid)
+         await db.set(`user:email:${credentials?.email}`,uuid)
           await db.set(`user:${uuid}`, JSON.stringify(userData))
           await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
          return Promise.resolve(userData)
