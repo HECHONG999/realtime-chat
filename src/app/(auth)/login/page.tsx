@@ -2,14 +2,17 @@
 
 import Button from '@/components/ui/Button'
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { signIn,getCsrfToken } from 'next-auth/react'
 import { toast} from 'react-hot-toast'
-export default async function Home() {
+const  Login  = () =>  {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
    async function loginWithGoogle() {
     setIsLoading(true);
     try{
-        await signIn('google')
+         signIn('google')
     }catch(error) {
       toast.error('Something went wrong with your login')
     }finally {
@@ -19,20 +22,60 @@ export default async function Home() {
   async function loginWithGithub() {
     setIsLoading(true);
     try{
-        await signIn('github')
+         signIn('github')
     }catch(error) {
       toast.error('Something went wrong with your login')
     }finally {
       setIsLoading(false)
     }
   }
-  return (
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if(username === '' || email === '') {
+            toast.error('请完善表单信息')
+            return
+        }
+        const csrfToken = await getCsrfToken()
+        const response = await fetch('/api/auth/callback/credentials', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                csrfToken,
+                email,
+                username,
+                password
+            })
+        });
+
+        // handle response
+    };
+
+    return (
     <div className='flex items-center justify-center min-h-screen px-4 py-12 sm:px-6 lg:px-8'>
       <div className='flex flex-col items-center w-full max-w-md space-y-8'>
         <div className='flex flex-col items-center gap-8'>
           logo
           <h2 className='mt-6 text-3xl font-bold tracking-tight text-center text-gray-900'> Sign in to your account</h2>
         </div>
+          <div className='flex flex-col items-center gap-8 w-full'>
+              <form onSubmit={handleSubmit} className='flex-col items-stretch'>
+                  <p className='flex-row justify-center my-2.5'>
+                      <label className='mr-2 inline-block w-20' >用户名</label>
+                      <input name="username" type="text" value={username} onChange={e => setUsername(e.target.value)} />
+                  </p>
+                 <p className='flex-row justify-center my-2.5'>
+                     <label className='mr-2 inline-block w-20'> 邮箱</label>
+                     <input name="username" type="text" value={email} onChange={e => setEmail(e.target.value)} />
+                 </p>
+                  <p className='flex-row justify-center my-2.5'>
+                      <label className='mr-2 inline-block w-20'>密码</label>
+                      <input name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+                  </p>
+                  <Button onClick={handleSubmit}  isLoading={isLoading} className='w-full max-w-sm max-auto' type='button'  >login</Button>
+              </form>
+          </div>
         <Button onClick={loginWithGoogle} isLoading={isLoading} className='w-full max-w-sm max-auto' type='button'  >
         {isLoading ? null : (
               <svg
@@ -102,3 +145,4 @@ export default async function Home() {
     </div>
   )
 }
+export default Login

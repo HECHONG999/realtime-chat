@@ -26,15 +26,16 @@ const sidebarOptions: SidebarOption[] = [
   ]
 const layout = async({children}:layoutProps) => {
     const session = await getServerSession(authOptions)
+    console.log('session=====', session)
     if(!session) notFound()
     const friends = await getFriendsByUserId(session.user.id);
     console.log('friends', friends)
 
     const unseenRequestCount = (await fetchRedis(
-      'smembers', 
+      'smembers',
       `user:${session?.user?.id}:incoming_friend_requests`
-      ) as User[]).length 
-      
+      ) as User[]).length
+
     return (
       <div className='flex w-full h-screen bg-white'>
           <div className='md:hidden'>
@@ -45,7 +46,7 @@ const layout = async({children}:layoutProps) => {
               <Link href='/dashboard' className='flex items-center h-16 shrink-0'>
                   <Icons.Logo className='h-8'></Icons.Logo>
               </Link>
-              
+
               {friends.length > 0 ? (
                 <div className='text-xs font-semibold leading-6 text-gray-400'>
                   Your chats

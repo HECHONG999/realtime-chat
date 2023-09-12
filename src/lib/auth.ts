@@ -3,7 +3,11 @@ import { UpstashRedisAdapter } from '@next-auth/upstash-redis-adapter'
 import { db } from './db'
 import GoogleProvider from 'next-auth/providers/google'
 import GithubProvider from 'next-auth/providers/github'
+import Credentials from 'next-auth/providers/credentials'
 import { fetchRedis } from '@/helpers/redis'
+import axios from "axios";
+import {v4 as uuidv4} from "uuid";
+import {el} from "date-fns/locale";
 
 export const authOptions: NextAuthOptions = {
   adapter: UpstashRedisAdapter(db),
@@ -22,6 +26,39 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: '096ac699f576e6414c61',
       clientSecret: '633ddd1d0dbca07c11dd513be8668ea3d0554da7'
+    }),
+    Credentials({
+      name: 'Credentials',
+      credentials: {
+        username: {label: "Username", type: "text" },
+        password: {  label: "Password", type: "password" },
+        email: {label: 'Email', type:'email'}
+      },
+      authorize: async (credentials) => {
+        // 在这个函数中，你需要自行编写匹配用户名和密码的代码
+        // 如果成功，应返回一个User对象；否则返回null
+        const uuid = uuidv4()
+         const userData = {
+           name:credentials.name,
+           image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
+           email: credentials.email,
+           emailVerified:null,
+           name: credentials.username,
+           id: uuid,
+           customId: uuid
+         }
+         const result =await db.get(`user:email:${credentials.email}`)
+       if(result) {
+         const user = await db.get(`user:${result}`)
+         console.log('user===', user)
+         return Promise.resolve(user)
+       }else {
+         await db.set(`user:email:${credentials.email}`,uuid)
+          await db.set(`user:${uuid}`, JSON.stringify(userData))
+          await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
+         return Promise.resolve(userData)
+       }
+      }
     })
   ],
   callbacks: {
@@ -39,7 +76,6 @@ export const authOptions: NextAuthOptions = {
       }
 
       const dbUser = JSON.parse(dbUserResult) as User
-
       return {
         id: dbUser.id,
         name: dbUser.name,
@@ -49,7 +85,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id
+        session.user.id = token.id ? token.id : token.id
         session.user.name = token.name
         session.user.email = token.email
         session.user.image = token.picture
