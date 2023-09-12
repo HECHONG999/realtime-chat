@@ -45,9 +45,7 @@ export const authOptions: NextAuthOptions = {
            name:credentials?.username,
            image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
            email: credentials?.email,
-           emailVerified:null,
            id: uuid,
-           customId: uuid
          }
         return  Promise.resolve(userData)
          const result =await db.get(`user:email:${credentials?.email}`)
