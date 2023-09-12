@@ -23,8 +23,8 @@ export const authOptions: NextAuthOptions = {
               }
         }),
         GithubProvider({
-            clientId: '096ac699f576e6414c61',
-            clientSecret: '7e90eb3ea66baab754737ee43c47e751716d29ba'
+            clientId: '6d6b153a6f77e819ba70',
+            clientSecret: 'bf69ae9d37a8868624475f272ea6b0bba5843ac2'
           })
     ],
     callbacks: {
