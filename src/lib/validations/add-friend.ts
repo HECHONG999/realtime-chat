@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const addFriendValidator = z.object({
-  email: z.string().email(),
+  email: z.string(),
 })
 export const addUserValidator = z.object({
   name: z.string(),
