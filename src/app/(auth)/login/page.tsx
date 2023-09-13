@@ -37,6 +37,7 @@ const  Login  = () =>  {
         }
 
        try {
+           // @ts-ignore
            await  signIn("Credentials", JSON.stringify({ username, password ,email, redirect: false }))
            // const csrfToken = await getCsrfToken()
            // const response = await fetch('/api/auth/callback/credentials', {
