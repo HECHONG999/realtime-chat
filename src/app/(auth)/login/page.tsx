@@ -31,14 +31,14 @@ const  Login  = () =>  {
   }
     const handleSubmit = async (event:any) => {
         event.preventDefault();
-        if(username === '' || email === '') {
+        if(username === '' || password === '') {
             toast.error('请完善表单信息')
             return
         }
 
        try {
            // @ts-ignore
-           await  signIn("Credentials", JSON.stringify({ username, password ,email }))
+           await  signIn("Credentials", { username, password ,email })
            // const csrfToken = await getCsrfToken()
            // const response = await fetch('/api/auth/callback/credentials', {
            //     method: 'POST',
@@ -54,6 +54,7 @@ const  Login  = () =>  {
            // });
        }catch (e) {
            console.log('认证失败',e)
+           toast.error('用户名或密码错误')
        }
         // handle response
     };
@@ -71,10 +72,10 @@ const  Login  = () =>  {
                       <label className='mr-2 inline-block w-20' >用户名</label>
                       <input name="username" type="text" value={username} onChange={e => setUsername(e.target.value)} />
                   </p>
-                 <p className='flex-row justify-center my-2.5'>
-                     <label className='mr-2 inline-block w-20'> 邮箱</label>
-                     <input name="username" type="text" value={email} onChange={e => setEmail(e.target.value)} />
-                 </p>
+                 {/*<p className='flex-row justify-center my-2.5'>*/}
+                 {/*    <label className='mr-2 inline-block w-20'> 邮箱</label>*/}
+                 {/*    <input name="username" type="text" value={email} onChange={e => setEmail(e.target.value)} />*/}
+                 {/*</p>*/}
                   <p className='flex-row justify-center my-2.5'>
                       <label className='mr-2 inline-block w-20'>密码</label>
                       <input name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />

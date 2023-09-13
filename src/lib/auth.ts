@@ -6,7 +6,7 @@ import GithubProvider from 'next-auth/providers/github'
 import Credentials from 'next-auth/providers/credentials'
 import { fetchRedis } from '@/helpers/redis'
 import {v4 as uuidv4} from "uuid";
-import {ca} from "date-fns/locale";
+import {ca, el} from "date-fns/locale";
 
 
 // @ts-ignore
@@ -34,33 +34,41 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         username: {label: "Username", type: "text" },
         password: {  label: "Password", type: "password" },
-        email: {label: 'Email', type:'email'}
+        // email: {label: 'Email', type:'email'}
       },
       //@ts-ignore
       authorize: async (credentials) => {
         // 在这个函数中，你需要自行编写匹配用户名和密码的代码
         // 如果成功，应返回一个User对象；否则返回null
-
+        console.log('redential====', credentials)
        try {
          const uuid = uuidv4()
          const userData = {
            name:credentials?.username,
            image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
-           email: credentials?.email,
+           email: credentials?.username,
            id: uuid,
          }
-         const result =await db.get(`user:email:${credentials?.email}`)
+         const result =await db.get(`user:email:${credentials?.username}`)
          if(result) {
            const user = await db.get(`user:${result}`)
-           return user
+           console.log('user=====', user)
+           if('facebook/facebook' === credentials?.password) {
+             return Promise.resolve(user)
+           }
+           return Promise.resolve(null)
          }else {
-           await db.set(`user:email:${credentials?.email}`,uuid)
-           await db.set(`user:${uuid}`, JSON.stringify(userData))
-           await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
-           return userData
+           if('facebook/facebook' === credentials?.password) {
+             await db.set(`user:email:${credentials?.username}`,uuid)
+             await db.set(`user:${uuid}`, JSON.stringify(userData))
+             await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
+             return Promise.resolve(userData)
+           }else {
+            return  Promise.resolve(null)
+           }
          }
        }catch (e) {
-         return  null
+         return  Promise.resolve(null)
        }
       }
     })
