@@ -35,21 +35,22 @@ const  Login  = () =>  {
             toast.error('请完善表单信息')
             return
         }
-        const csrfToken = await getCsrfToken()
-        // const response = await fetch('/api/auth/callback/credentials', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         csrfToken,
-        //         email,
-        //         username,
-        //         password
-        //     })
-        // });
+
        try {
-           await  signIn("Credentials", { username, password ,email, redirect: false  })
+           // await  signIn("Credentials", { username, password ,email, redirect: false  })
+           const csrfToken = await getCsrfToken()
+           const response = await fetch('/api/auth/callback/credentials', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify({
+                   csrfToken,
+                   email,
+                   username,
+                   password
+               })
+           });
        }catch (e) {
            console.log('认证失败',e)
        }
