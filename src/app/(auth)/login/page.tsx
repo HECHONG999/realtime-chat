@@ -37,20 +37,20 @@ const  Login  = () =>  {
         }
 
        try {
-           // await  signIn("Credentials", { username, password ,email, redirect: false  })
-           const csrfToken = await getCsrfToken()
-           const response = await fetch('/api/auth/callback/credentials', {
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/json'
-               },
-               body: JSON.stringify({
-                   csrfToken,
-                   email,
-                   username,
-                   password
-               })
-           });
+           await  signIn("Credentials", JSON.stringify({ username, password ,email, redirect: false }))
+           // const csrfToken = await getCsrfToken()
+           // const response = await fetch('/api/auth/callback/credentials', {
+           //     method: 'POST',
+           //     headers: {
+           //         'Content-Type': 'application/json'
+           //     },
+           //     body: JSON.stringify({
+           //         csrfToken,
+           //         email,
+           //         username,
+           //         password
+           //     })
+           // });
        }catch (e) {
            console.log('认证失败',e)
        }
