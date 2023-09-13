@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button'
 import { useState } from 'react'
 import { signIn,getCsrfToken } from 'next-auth/react'
 import { toast} from 'react-hot-toast'
+import {router} from "next/client";
 const  Login  = () =>  {
   const [isLoading, setIsLoading] = useState<boolean>(false)
     const [email, setEmail] = useState('');
@@ -48,7 +49,11 @@ const  Login  = () =>  {
         //         password
         //     })
         // });
-        await signIn("username-login", { username, password ,email,csrfToken, });
+         signIn("Credentials", { username, password ,email,callbackUrl: `${window.location.origin}/dashboard`, redirect: false  }).then(function(result) {
+            router.push(result?.url as string)
+        }).catch(err => {
+            alert("Failed to register: " + err.toString())
+        });;
         // handle response
     };
 

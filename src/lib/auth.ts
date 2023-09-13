@@ -6,6 +6,7 @@ import GithubProvider from 'next-auth/providers/github'
 import Credentials from 'next-auth/providers/credentials'
 import { fetchRedis } from '@/helpers/redis'
 import {v4 as uuidv4} from "uuid";
+import {ca} from "date-fns/locale";
 
 
 // @ts-ignore
@@ -28,7 +29,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: '633ddd1d0dbca07c11dd513be8668ea3d0554da7'
     }),
     Credentials({
-      id: "username-login", // <- add this line
+      id: "Credentials",
       name: 'Credentials',
       credentials: {
         username: {label: "Username", type: "text" },
@@ -40,7 +41,8 @@ export const authOptions: NextAuthOptions = {
         // 在这个函数中，你需要自行编写匹配用户名和密码的代码
         // 如果成功，应返回一个User对象；否则返回null
 
-        const uuid = uuidv4()
+       try {
+         const uuid = uuidv4()
          const userData = {
            name:credentials?.username,
            image:'https://lh3.googleusercontent.com/a/ACg8ocJLZ2Y_UyTGdI37pplSAUYoc4RWQoc870PNbTGvKHrf=s96-c',
@@ -48,14 +50,17 @@ export const authOptions: NextAuthOptions = {
            id: uuid,
          }
          const result =await db.get(`user:email:${credentials?.email}`)
-       if(result) {
-         const user = await db.get(`user:${result}`)
-         return user
-       }else {
-         await db.set(`user:email:${credentials?.email}`,uuid)
-          await db.set(`user:${uuid}`, JSON.stringify(userData))
-          await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
-         return userData
+         if(result) {
+           const user = await db.get(`user:${result}`)
+           return user
+         }else {
+           await db.set(`user:email:${credentials?.email}`,uuid)
+           await db.set(`user:${uuid}`, JSON.stringify(userData))
+           await db.set(` user:account:by-user-id:${uuid}`,`user:account:google:${uuidv4()}`)
+           return userData
+         }
+       }catch (e) {
+         return  null
        }
       }
     })
