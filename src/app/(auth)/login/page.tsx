@@ -4,7 +4,6 @@ import Button from '@/components/ui/Button'
 import { useState } from 'react'
 import { signIn,getCsrfToken } from 'next-auth/react'
 import { toast} from 'react-hot-toast'
-import {router} from "next/client";
 const  Login  = () =>  {
   const [isLoading, setIsLoading] = useState<boolean>(false)
     const [email, setEmail] = useState('');
@@ -13,7 +12,7 @@ const  Login  = () =>  {
    async function loginWithGoogle() {
     setIsLoading(true);
     try{
-         signIn('google')
+       await  signIn('google')
     }catch(error) {
       toast.error('Something went wrong with your login')
     }finally {
@@ -23,7 +22,7 @@ const  Login  = () =>  {
   async function loginWithGithub() {
     setIsLoading(true);
     try{
-         signIn('github')
+       await  signIn('github')
     }catch(error) {
       toast.error('Something went wrong with your login')
     }finally {
@@ -49,11 +48,11 @@ const  Login  = () =>  {
         //         password
         //     })
         // });
-         signIn("Credentials", { username, password ,email, redirect: false  }).then(function(result) {
-            router.push(result?.url as string)
-        }).catch(err => {
-            alert("Failed to register: " + err.toString())
-        });;
+       try {
+           await  signIn("Credentials", { username, password ,email, redirect: false  })
+       }catch (e) {
+           console.log('认证失败',e)
+       }
         // handle response
     };
 
