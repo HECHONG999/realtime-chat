@@ -1,5 +1,5 @@
-const upstashRedisRestUrl = process.env.UPSTASH_REDIS_REST_URL
-const authToken = process.env.UPSTASH_REDIS_REST_TOKEN
+const upstashRedisRestUrl = 'https://credible-boar-33126.upstash.io'
+const authToken = 'AYFmASQgZjRjN2RlZDktMzE2NC00YmU4LThhMjAtMzdkOTc5ODY4NmYxZWQ4YzZhN2FmMzBjNDUzYmEzNTQ5YzMzODMzNjM4YTY='
 
 type Command = 'zrange' | 'sismember' | 'get' | 'smembers'
 
