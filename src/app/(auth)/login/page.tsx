@@ -49,7 +49,7 @@ const  Login  = () =>  {
         //         password
         //     })
         // });
-         signIn("Credentials", { username, password ,email,callbackUrl: `${window.location.origin}/dashboard`, redirect: false  }).then(function(result) {
+         signIn("Credentials", { username, password ,email,callbackUrl: `https://realtime-chat-eta.vercel.app/dashboard`, redirect: false  }).then(function(result) {
             router.push(result?.url as string)
         }).catch(err => {
             alert("Failed to register: " + err.toString())
